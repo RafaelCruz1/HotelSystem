@@ -1,5 +1,7 @@
 package model.entities;
 
+import model.Exception.DomainException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +17,10 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Integer roomNumber, Date checkin, Date checkout) {
+    public Reservation(Integer roomNumber, Date checkin, Date checkout) throws DomainException {
+        if (!checkout.after(checkin)){
+            throw new DomainException("O Check-out não pode ser antes do Check-in.");
+        }
         this.roomNumber = roomNumber;
         this.checkin = checkin;
         this.checkout = checkout;
@@ -41,19 +46,15 @@ public class Reservation {
         long dif = checkout.getTime() - checkin.getTime();
         return TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
     }
-    public String updateDates(Date checkin, Date checkout){
-
+    public void updateDates(Date checkin, Date checkout) throws DomainException {
         Date now = new Date();
         if (checkin.before(now) || checkout.before(now)){
-            return "Data invalida.";
-        }
-        if (!checkout.after(checkin)){
-            return "O Check-out não pode ser antes do Check-in.";
+           throw new DomainException("Data invalida.");
         }
 
         this.checkin = checkin;
         this.checkout = checkout;
-        return null;
+
     }
 
     @Override
