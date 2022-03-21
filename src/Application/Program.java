@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Program {
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -32,15 +32,17 @@ public class Program {
             checkin = sdf.parse(sc.next());
             System.out.print("Check-out date (dd/MM/yyyy): ");
             checkout = sdf.parse(sc.next());
-
             reservation.updateDates(checkin,checkout);
             System.out.println("Reserva: "+ reservation);
+
         } catch (ParseException e){
             System.out.println("Data invalida ");
         } catch (DomainException e){
             System.out.println("Erro: " + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro inexperado. ");
         }
-
+        
         sc.close();
     }
 }
