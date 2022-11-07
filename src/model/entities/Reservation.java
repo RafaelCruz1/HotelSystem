@@ -46,15 +46,19 @@ public class Reservation {
         long dif = checkout.getTime() - checkin.getTime();
         return TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
     }
+
+    public double total(){
+        double valueDiary = 65.0;
+        return duration() * valueDiary;
+    }
+
     public void updateDates(Date checkin, Date checkout) throws DomainException {
         Date now = new Date();
         if (checkin.before(now) || checkout.before(now)){
            throw new DomainException("Data invalida.");
         }
-
         this.checkin = checkin;
         this.checkout = checkout;
-
     }
 
     @Override
@@ -68,6 +72,8 @@ public class Reservation {
                 + sdf.format(checkout)
                 + ", "
                 + duration()
-                + " nights.";
+                + " diárias, "
+                + "valor total = "
+                +total();
     }
 }
